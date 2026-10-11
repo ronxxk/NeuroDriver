@@ -1,0 +1,13 @@
+AI Race Car: neuroevolution in Unity + Python
+
+This project teaches 2D drift cars to drive around a track using an evolutionary neural network, with no hand-written driving rules and no training data. Unity runs the simulation (physics, track, cars). A separate Python program holds the neural networks and decides what each car does. The two talk over a local TCP socket.
+
+How it works. Every physics tick, each car casts seven rays forward in a fan (-60° to +60°) to measure the distance to the walls, and also reports its forward and sideways speed. Unity sends these nine numbers for all cars as one JSON message. Python feeds each car’s numbers through its own small neural network (9 inputs, two hidden ReLU layers of 9 and 4 neurons, 2 tanh outputs) and replies with a throttle and a steering value, which Unity applies to the car’s drift controller.
+
+How it learns. Cars are scored with ordered checkpoints placed around the track. Fitness is the number of checkpoints passed in order, plus fractional progress toward the next one, with a small penalty for time spent alive so faster cars win. Cars that crash, or make no progress for several seconds, are frozen. When every car is dead or a time limit hits, Unity resets all cars to the start and increments the generation counter. Python then ranks the brains, keeps the top few, and builds the next generation: one unchanged copy of the best brain, mutated copies of the top performers (random Gaussian noise on a fraction of the weights), and a few fully random newcomers to keep exploring. If progress stalls, mutation strength is automatically increased. The best brain is saved to disk and loaded on the next run, so training can be continued.
+
+Results. Starting from random weights, the cars complete a full lap in about nine generations. A model trained on one track was tested on a 90° rotated copy (works, though this is expected, since the sensors are relative to the car) and on a mirrored track (only one car finished), which shows partial generalization.
+
+Limitations and next steps. The brain was trained on a single track layout, so it can partly memorize that layout. The planned next step is training across several different tracks by alternating them between generations, then testing on a layout it has never seen. Other ideas are adding handbrake/drift as a third output, a lap timer, and racing against a human-driven car.
+
+Tech stack: Unity (C#, 2D physics, raycasts), Python (NumPy, no ML framework, hand-written network and evolution), TCP sockets with newline-delimited JSON.

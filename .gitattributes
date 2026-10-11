@@ -1,0 +1,34 @@
+# Normalize line endings
+* text=auto
+
+# Unity and C# text files
+*.cs text
+*.shader text
+*.compute text
+*.cginc text
+*.hlsl text
+*.json text
+*.asmdef text
+*.meta text
+*.unity text merge=unityyamlmerge
+*.prefab text merge=unityyamlmerge
+*.asset text merge=unityyamlmerge
+
+# Python and docs
+*.py text
+*.txt text
+*.md text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.psd binary
+*.kra binary
+*.blend binary
+*.fbx binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.mp4 binary
+*.npz binary
