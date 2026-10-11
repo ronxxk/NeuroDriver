@@ -3,7 +3,6 @@ import random
 import numpy
 from reader import UnityReader
 
-# ---------------- settings ----------------
 RESET = False    # True = ignore the saved brain and start from scratch
 ELITE = 4           # how many top brains breed the next generation
 MUT_RATE = 0.10      # chance each weight gets nudged
@@ -42,7 +41,6 @@ class Brain:
         return float(throttle), float(steer)
 
 
-# ---------------- save / load ----------------
 best_saved = -1.0
 
 
@@ -67,7 +65,6 @@ def load_brain():
         return None
 
 
-# ---------------- evolution ----------------
 brains = {}
 best_fit = {}        # best fitness each car reached in the current generation
 current_gen = None
@@ -125,7 +122,6 @@ def evolve():
     for cid, b in zip(ids, next_population(elites, len(ids), boost)):
         brains[cid] = b
                 
-# ---------------- message handler ----------------
 def handle(msg):
     global current_gen, tick
     tick += 1
